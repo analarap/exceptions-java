@@ -4,19 +4,20 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Reservation {
     private Integer roomNumber;
-    private LocalDateTime checkIn;
-    private LocalDateTime checkOut;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Reservation(){
     }
 
-    public Reservation(Integer roomNumber, LocalDateTime checkIn, LocalDateTime checkOut) {
+    public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) {
         this.roomNumber = roomNumber;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -30,27 +31,26 @@ public class Reservation {
         this.roomNumber = roomNumber;
     }
 
-    public LocalDateTime getCheckIn() {
+    public LocalDate getCheckIn() {
         return checkIn;
     }
 
-    public LocalDateTime getCheckOut() {
+    public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    public long duration(){
-        Duration diff = Duration.between(checkOut, checkIn);
-        return diff.toDays();
+    public long duration() {
+        return checkOut.toEpochDay() - checkIn.toEpochDay();
     }
 
-    public void updateDates(LocalDateTime checkIn, LocalDateTime checkOut){
+    public void updateDates(LocalDate checkIn, LocalDate checkOut){
         this.checkIn = checkIn;
         this.checkOut = checkOut;
     }
 
     @Override
     public String toString(){
-        return "Room " + roomNumber + ", check-in: " + sdf.format(checkIn) + ", check-out: " + sdf.format(checkOut) + ", " + duration() + " nights";
+        return "Room " + roomNumber + ", check-in: " + formatter.format(checkIn) + ", check-out: " + formatter.format(checkOut) + ", " + duration() + " nights";
     }
 
 }
